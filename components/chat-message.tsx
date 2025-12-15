@@ -3,6 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { Scale, User } from "lucide-react"
 import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
 
@@ -14,20 +15,25 @@ type Message = {
 }
 
 function formatToBulletPoints(text: string): string {
-  // First, split by paragraphs (double newlines or single newlines)
-  const paragraphs = text.split(/\n\n+/)
+  // Check if text already contains markdown formatting (headers, lists, code blocks)
+  const hasMarkdown = /^(#{1,6}\s|[-*+]\s|\d+\.\s|```|\|)/m.test(text)
   
+  // If already has markdown formatting, return as-is
+  if (hasMarkdown) {
+    return text
+  }
+  
+  // Otherwise, format into bullet points
+  const paragraphs = text.split(/\n\n+/)
   let allBullets: string[] = []
   
   for (const paragraph of paragraphs) {
     if (!paragraph.trim()) continue
     
-    // Split paragraph by sentence endings (. ! ?)
     const sentences = paragraph
       .split(/(?<=[.!?])\s+/)
       .filter(s => s.trim().length > 0)
     
-    // Group sentences into pairs
     for (let i = 0; i < sentences.length; i += 2) {
       const sentencePair = sentences.slice(i, i + 2).join(" ").trim()
       if (sentencePair) {
@@ -36,7 +42,6 @@ function formatToBulletPoints(text: string): string {
     }
   }
   
-  // Format as markdown list with proper spacing
   return allBullets.map(bullet => `• ${bullet}`).join("\n\n")
 }
 
@@ -50,7 +55,6 @@ export function ChatMessage({ message }: { message: Message }) {
       setIsTyping(true)
       setDisplayedContent("")
       
-      // Format content into bullet points
       const formattedContent = formatToBulletPoints(message.content)
       
       let currentIndex = 0
@@ -114,16 +118,46 @@ export function ChatMessage({ message }: { message: Message }) {
               prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-muted-foreground
               prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1 prose-code:py-0.5 
               prose-code:rounded prose-code:font-mono prose-code:text-sm
+              prose-pre:bg-muted prose-pre:border prose-pre:border-primary/20 prose-pre:p-4 prose-pre:rounded-lg
+              prose-pre:overflow-x-auto prose-pre:shadow-[0_0_15px_rgba(168,85,247,0.2)]
               prose-a:text-primary prose-a:underline prose-a:font-semibold
               prose-a:drop-shadow-[0_0_5px_rgba(168,85,247,0.4)]
               prose-hr:border-primary/30 prose-hr:my-4
+              prose-table:border-collapse prose-table:w-full prose-table:my-4
+              prose-th:border prose-th:border-primary/30 prose-th:bg-primary/10 prose-th:p-2 prose-th:text-left prose-th:font-bold
+              prose-td:border prose-td:border-primary/30 prose-td:p-2
+              prose-img:rounded-lg prose-img:shadow-lg prose-img:my-4
             ">
               <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
                 components={{
                   h1: ({node, ...props}) => <h1 className="animate-[glow_2s_ease-in-out_infinite]" {...props} />,
                   h2: ({node, ...props}) => <h2 className="animate-[glow_2s_ease-in-out_infinite]" {...props} />,
                   h3: ({node, ...props}) => <h3 className="animate-[glow_2s_ease-in-out_infinite]" {...props} />,
+                  h4: ({node, ...props}) => <h4 className="text-base font-bold mt-3 mb-2" {...props} />,
+                  h5: ({node, ...props}) => <h5 className="text-sm font-bold mt-2 mb-1" {...props} />,
+                  h6: ({node, ...props}) => <h6 className="text-xs font-bold mt-2 mb-1" {...props} />,
                   strong: ({node, ...props}) => <strong className="animate-[glow_2s_ease-in-out_infinite]" {...props} />,
+                  code: ({node, className, children, ...props}) => {
+                    const match = /language-(\w+)/.exec(className || '')
+                    return match ? (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    ) : (
+                      <code className="bg-primary/10 text-primary px-1 py-0.5 rounded font-mono text-sm" {...props}>
+                        {children}
+                      </code>
+                    )
+                  },
+                  table: ({node, ...props}) => (
+                    <div className="overflow-x-auto my-4">
+                      <table className="min-w-full border-collapse" {...props} />
+                    </div>
+                  ),
+                  a: ({node, ...props}) => (
+                    <a className="text-primary underline hover:text-primary/80 transition-colors" target="_blank" rel="noopener noreferrer" {...props} />
+                  ),
                 }}
               >
                 {displayedContent}
