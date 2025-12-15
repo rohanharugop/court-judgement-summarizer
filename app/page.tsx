@@ -176,9 +176,9 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-background">
+    <div className="flex h-screen flex-col bg-transparent">
       {/* Top Navigation */}
-      <header className="sticky top-0 z-10 border-b bg-card shadow-sm">
+      <header className="sticky top-0 z-10 border-b bg-card/80 backdrop-blur-md shadow-sm">
         <div className="flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)}>
@@ -197,7 +197,7 @@ export default function HomePage() {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <aside
-          className={cn("border-r bg-card transition-all duration-300", sidebarOpen ? "w-64" : "w-0")}
+          className={cn("border-r bg-card/80 backdrop-blur-md transition-all duration-300", sidebarOpen ? "w-64" : "w-0")}
         >
           <div className={cn("flex h-full flex-col p-4", !sidebarOpen && "hidden")}>
             <Button
@@ -311,7 +311,7 @@ export default function HomePage() {
           </div>
 
           {/* Input Area */}
-          <div className="border-t bg-card px-4 py-4">
+          <div className="border-t bg-card/80 backdrop-blur-md px-4 py-4">
             <div className="mx-auto max-w-4xl">
               <form onSubmit={handleSubmit} className="flex gap-2">
                 <Textarea
@@ -339,7 +339,7 @@ export default function HomePage() {
           </div>
 
           {/* Legal Disclaimer */}
-          <footer className="border-t bg-background px-4 py-2">
+          <footer className="border-t bg-background/50 backdrop-blur-sm px-4 py-2">
             <p className="mx-auto max-w-4xl text-center text-xs text-muted-foreground">
               This system provides AI-generated summaries for research purposes only and does not constitute legal
               advice.

@@ -48,20 +48,20 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(98.212% 0.00011 271.152);
   --foreground: oklch(0.147 0.004 49.25);
-  --card: oklch(1 0 0);
+  --card: oklch(83.841% 0.07291 171.479 / 0.237);
   --card-foreground: oklch(0.147 0.004 49.25);
-  --popover: oklch(1 0 0);
+  --popover: oklch(76.41% 0.08182 280.373);
   --popover-foreground: oklch(0.147 0.004 49.25);
-  --primary: oklch(0.216 0.006 56.043);
-  --primary-foreground: oklch(0.985 0.001 106.423);
+  --primary: oklch(31.172% 0.01899 185.589);
+  --primary-foreground: oklch(46.422% 0.09555 233.786);
   --secondary: oklch(0.97 0.001 106.424);
   --secondary-foreground: oklch(0.216 0.006 56.043);
   --muted: oklch(0.97 0.001 106.424);
   --muted-foreground: oklch(0.553 0.013 58.071);
   --accent: oklch(0.97 0.001 106.424);
-  --accent-foreground: oklch(0.216 0.006 56.043);
+  --accent-foreground: oklch(44.651% 0.2798 264.857);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.923 0.003 48.717);
   --input: oklch(0.923 0.003 48.717);
@@ -73,7 +73,7 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0.001 106.423);
   --sidebar-foreground: oklch(0.147 0.004 49.25);
-  --sidebar-primary: oklch(0.216 0.006 56.043);
+  --sidebar-primary: oklch(39.496% 0.18651 264.493);
   --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
   --sidebar-accent: oklch(0.97 0.001 106.424);
   --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
@@ -133,8 +133,8 @@
 
 .ocean {
   /* Blue-Yellow-Green gradient theme */
-  --background: oklch(0.25 0.08 220);
-  --foreground: oklch(0.95 0.02 220);
+  --background: oklch(60.502% 0.11739 234.353);
+  --foreground: oklch(73.604% 0.20356 135.209);
   
   --card: oklch(0.3 0.1 220);
   --card-foreground: oklch(0.95 0.02 220);
@@ -229,6 +229,63 @@
   }
   body {
     @apply bg-background text-foreground;
+    position: relative;
+  }
+  
+  /* Animated gradient backgrounds */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  
+  .light body::before {
+    background: linear-gradient(135deg, 
+      rgba(229, 231, 235, 0.8) 0%,
+      rgba(195, 211, 105, 0.933) 100%);
+  }
+  
+  .dark body::before {
+    background: linear-gradient(135deg, 
+      rgba(88, 28, 135, 0.7) 0%,
+      rgba(13, 0, 24, 0.6) 25%,
+      rgba(0, 0, 0, 0.299) 50%,
+      rgba(192, 132, 252, 0.4) 75%,
+      rgba(88, 28, 135, 0.7) 100%);
+    animation: gradientShift 15s ease infinite;
+    background-size: 200% 200%;
+  }
+  
+  .ocean body::before {
+    background: linear-gradient(135deg,
+      rgba(10, 6, 245, 0.8) 0%,
+      rgba(46, 11, 175, 0.7) 15%,
+      rgba(19, 173, 220, 0.5) 30%,
+      rgba(11, 55, 198, 0.6) 50%,
+      rgba(65, 76, 204, 0.7) 65%,
+      rgba(44, 11, 195, 0.7) 80%,
+      rgba(16, 33, 185, 0.8) 100%);
+    animation: oceanWave 20s ease infinite;
+    background-size: 300% 300%;
+  }
+  
+  .sunset body::before {
+    background: linear-gradient(135deg,
+      rgba(239, 68, 68, 0.8) 0%,
+      rgba(196, 137, 11, 0.768) 15%,
+      rgba(192, 2, 53, 0.5) 30%,
+      rgba(251, 146, 60, 0.7) 50%,
+      rgba(253, 186, 116, 0.7) 65%,
+      rgba(250, 204, 21, 0.7) 80%,
+      rgba(251, 191, 36, 0.8) 100%);
+    animation: sunsetGlow 18s ease infinite;
+    background-size: 250% 250%;
   }
 }
 
@@ -242,6 +299,51 @@
       text-shadow: 0 0 10px rgba(168, 85, 247, 0.8),
                    0 0 20px rgba(168, 85, 247, 0.5),
                    0 0 30px rgba(168, 85, 247, 0.3);
+    }
+  }
+  
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  @keyframes oceanWave {
+    0% {
+      background-position: 0% 0%;
+    }
+    25% {
+      background-position: 50% 25%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    75% {
+      background-position: 50% 75%;
+    }
+    100% {
+      background-position: 0% 0%;
+    }
+  }
+  
+  @keyframes sunsetGlow {
+    0% {
+      background-position: 0% 0%;
+    }
+    33% {
+      background-position: 100% 33%;
+    }
+    66% {
+      background-position: 0% 66%;
+    }
+    100% {
+      background-position: 0% 0%;
     }
   }
 }

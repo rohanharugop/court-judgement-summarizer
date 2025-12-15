@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     
     // Forward the request to your FastAPI backend
-    const response = await fetch('http://127.0.0.1:8000/rag', {
+    const response = await fetch('https://court-judgement-summarizer-2.onrender.com/rag', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

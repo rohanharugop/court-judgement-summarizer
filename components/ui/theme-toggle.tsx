@@ -34,7 +34,7 @@ export function ThemeToggle() {
           {theme === "dark" ? (
             <Moon className="h-5 w-5" />
           ) : theme === "ocean" ? (
-            <Palette className="h-5 w-5 text-blue-500" />
+            <Palette className="h-5 w-5 text-blue-400/30" />
           ) : theme === "sunset" ? (
             <Palette className="h-5 w-5 text-orange-500" />
           ) : (
@@ -53,11 +53,11 @@ export function ThemeToggle() {
           Dark
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("ocean")}>
-          <div className="mr-2 h-4 w-4 rounded-full bg-gradient-to-r from-blue-500 via-yellow-400 to-green-500" />
+          <div className="mr-2 h-4 w-4 rounded-full bg-gradient-to-r from-blue-300 via-yellow-300 to-green-300/40" />
           Ocean
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("sunset")}>
-          <div className="mr-2 h-4 w-4 rounded-full bg-gradient-to-r from-red-500 via-orange-500 to-yellow-400" />
+          <div className="mr-2 h-4 w-4 rounded-full bg-gradient-to-r from-red-700 via-orange-300 to-yellow-400" />
           Sunset
         </DropdownMenuItem>
       </DropdownMenuContent>
